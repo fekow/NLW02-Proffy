@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem from '../../components/TeacherItem';
@@ -6,8 +6,24 @@ import Input from '../../components/Input'
 
 import './styles.css';
 import Select from '../../components/Select';
+import api from '../../services/api';
 
 export default function TeacherList() {
+  const [ classes, setClasses ] = useState([]);
+  const [ week_day, setWeek_day ] = useState('1');
+  const [ subject, setSubject ] = useState('Ciencias');
+  const [ time, setTime ] = useState('8:00');
+
+  useEffect(()=>{
+    api.get('/classes', {
+      params: {
+        week_day,
+        subject,
+        time
+      }
+    }).then(response=> setClasses(response.data))
+  },[ week_day, subject, time])
+
   return (
     <div id="page-teacher-list" className="container">
       <PageHeader title="Estes são os proffys disponíveis">
@@ -27,6 +43,7 @@ export default function TeacherList() {
               {value: 'Química', label: 'Química'},
               {value: 'Educação física', label: 'Educação física'}
             ]}
+            onChange={(e)=> {setSubject(e.target.value)}}
         />          
         <Select 
           label="Dia da semana"
@@ -40,15 +57,15 @@ export default function TeacherList() {
             {value: '5', label: 'Sexta-feira'},
             {value: '6', label: 'Sabado'}
           ]}
+          onChange={(e)=> {setWeek_day(e.target.value)}}
         />
-        <Input type="time" label="Hora" name="time" />
+        <Input type="time" label="Hora" name="time" onChange={(e)=> {setTime(e.target.value)}} />
         </form>
       </PageHeader>
       <main>
-        <TeacherItem />
-        <TeacherItem />
-        <TeacherItem />
-        <TeacherItem />
+        {classes.map(classItem=> {
+          return <TeacherItem teacherInfo={classItem} />
+        })}
       </main>
     </div>
   )
