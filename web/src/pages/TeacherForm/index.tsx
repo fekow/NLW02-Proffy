@@ -68,9 +68,24 @@ export default function TeacherForm() {
         <form onSubmit={handleCreateClass}>
         <fieldset>
           <legend>Seus dados</legend>
-          <Input label="Nome completo" name="name" value={name} onChange={(e)=> {setName(e.target.value)}} />
-          <Input label="Avatar" name="avatar" value={avatar} onChange={(e)=> {setAvatar(e.target.value)}} />
-          <Input label="Whatsapp" name="whatsapp" value={whatsapp} onChange={(e)=> {setWhatsapp(e.target.value)}} />
+          <Input 
+            label="Nome completo"
+             name="name"
+             value={name}
+             onChange={(e)=> {setName(e.target.value)}}
+            />
+          <Input 
+            label="Avatar"
+            name="avatar"
+            value={avatar}
+            onChange={(e)=> {setAvatar(e.target.value)}}
+          />
+          <Input 
+            label="Whatsapp"
+            name="whatsapp"
+            value={whatsapp}
+            onChange={(e)=> {setWhatsapp(e.target.value)}}
+          />
           <Textarea label="Biografia" name="bio" value={bio} onChange={(e)=> {setBio(e.target.value)}}/>
         </fieldset>
         <fieldset>

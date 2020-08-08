@@ -1,20 +1,33 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg'
+import { formatPrice } from '../../util/format'
 
 import './styles.css'
+import api from '../../services/api'
+
+export interface Teacher {
+  id: number;
+  subject: string;
+  cost: number;
+  name: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
 
 interface Props {
-  teacherInfo: {
-    subject: string;
-    cost: string;
-    name: string;
-    avatar: string;
-    whatsapp: string;
-    bio: string;
-  }
+  teacherInfo: Teacher;
 }
 
 const TeacherItem: React.FC<Props> = ({teacherInfo}) => {
+  const cost = useMemo(()=>{
+    return formatPrice(teacherInfo.cost)
+  },[teacherInfo.cost])
+
+  function createConnection() {
+    api.post('connections', { user_id: teacherInfo.id} )
+  }
+
   return (
         <article className="teacher-item">
           <header>
@@ -31,13 +44,13 @@ const TeacherItem: React.FC<Props> = ({teacherInfo}) => {
             <p>
               Preço/hora
               <strong>
-                R$ {teacherInfo.cost}
+                {cost}
               </strong>
             </p>
-            <button type="button">
+            <a href={`https://wa.me/${teacherInfo.whatsapp}`} onClick={createConnection} >
               <img src={whatsappIcon} alt="Whatsapp" />
               Entrar em contato
-            </button>
+            </a>
           </footer>
         </article>
   )
